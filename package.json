@@ -1,0 +1,18 @@
+{
+  "name": "somc",
+  "version": "1.0.0",
+  "description": "Service offering message channel",
+  "main": "index.js",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.1"
+  },
+  "scripts": {
+    "test": "mocha --timeout 10000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.0.2"
+  }
+}
