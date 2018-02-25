@@ -1,7 +1,6 @@
 var assert = require('assert');
 var offerings = require('../models/offerings');
 
-
 var offeringData = {
         'hash': '4598dec954ca4356b95d927a8404aea69b881169b7fc3a69c506471f625254',
         'agent_address': '0xe87d50b24f73ef30a28af9a6d6c293bfe24a4e7b',
@@ -79,7 +78,4 @@ describe("Test functions of model offerings", function(){
         await o.deleteOfferingChannel(offeringChannelDate.hash);
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash)),null);
     })
-
-
-
 })

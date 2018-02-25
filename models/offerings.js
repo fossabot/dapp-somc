@@ -1,14 +1,14 @@
 "use strict";
-var mongo = require('mongodb');
+const mongo = require('mongodb');
 var me = null;
+const url = "mongodb://localhost:27017/somc";
 
 class offerings {
 
-    async _initialize () {
+    async _initialize (url) {
         if (!me || !me.db || !me.db.connector || !me.db.connector.isConnected()) {
             me = this;
-            var MongoClient = require('mongodb').MongoClient;
-            var url = "mongodb://localhost:27017/somc";
+            const MongoClient = require('mongodb').MongoClient;
             return new Promise(function (callback) {
                 MongoClient.connect(url, function (err, db) {
                     if (err) throw err;
@@ -30,17 +30,17 @@ class offerings {
      * @returns {Promise.<Array>}
      */
     async getOfferings (hash_list) {
-        await this._initialize();
-        var ret = [];
+        await this._initialize(url);
+        const ret = [];
         for(var i in hash_list) {
-            ret.push(await new Promise((resolve, reject) => {
+            ret.push(new Promise((resolve, reject) => {
                 me.db.offerings.findOne({'hash': hash_list[i]}, (err,rows) => {
                     if (err) reject(err);
-                    resolve(rows);
+                    else resolve(rows);
                 });
             }));
         }
-        return ret;
+        return Promise.all(ret);
     }
 
     /**
@@ -48,20 +48,20 @@ class offerings {
      * @param hash string
      * @param agent_address string
      * @param data string
-     * @returns true
+     * @returns {Promise<void>}
      */
 
     async saveOffering(hash, agent_address, data) {
-        await this._initialize();
-        await new Promise((resolve, reject) => {
-            var dataObj = {
+        await this._initialize(url);
+        return new Promise((resolve, reject) => {
+            const dataObj = {
                 hash: hash,
                 agent_address: agent_address,
                 data: data
             }
             me.db.offerings.update({'hash':hash},dataObj,{upsert:true},(err,res) => {
                 if (err) reject(err);
-                resolve();
+                else resolve();
             })
         })
     }
@@ -69,34 +69,36 @@ class offerings {
     /**
      * Delete offerings
      * @param hash_list
-     * @returns {Promise.<void>}
+     * @returns {Promise.<Array>}
      */
     async deleteOfferings (hash_list) {
-        await this._initialize();
+        await this._initialize(url);
+        const promises = [];
         for(var i in hash_list) {
-            await new Promise((resolve, reject) => {
+            promises.push(new Promise((resolve, reject) => {
                 me.db.offerings.deleteOne({'hash': hash_list[i]}, (err,rows) => {
                     if (err) reject(err);
-                    resolve();
+                    else resolve();
                 });
-            })
+            }));
         }
+        return Promise.all(promises);
     }
 
     async getOfferingChannel(hash){
-        await this._initialize();
-        return await new Promise((resolve, reject) => {
+        await this._initialize(url);
+        return new Promise((resolve, reject) => {
             me.db.offering_channels.findOne({'hash': hash}, (err,rows) => {
                 if (err) reject(err);
-                resolve(rows);
+                else resolve(rows);
             });
         })
     }
 
     async saveOfferingChannel(hash, state_channel, message_type, data) {
-        await this._initialize();
-        await new Promise((resolve, reject) => {
-            var dataObj = {
+        await this._initialize(url);
+        return new Promise((resolve, reject) => {
+            const dataObj = {
                 hash: hash,
                 state_channel: state_channel,
                 message_type: message_type,
@@ -104,17 +106,17 @@ class offerings {
             }
             me.db.offering_channels.update({'hash':hash},dataObj,{upsert:true},(err,res) => {
                 if (err) reject(err);
-                resolve();
+                else resolve();
             })
         })
     }
 
     async deleteOfferingChannel (hash) {
-        await this._initialize();
-        await new Promise((resolve, reject) => {
+        await this._initialize(url);
+        return new Promise((resolve, reject) => {
             me.db.offering_channels.deleteOne({'hash': hash}, (err,rows) => {
                 if (err) reject(err);
-                resolve();
+                else resolve();
             });
         })
     }
@@ -122,5 +124,3 @@ class offerings {
 }
 
 module.exports = offerings;
-
-
