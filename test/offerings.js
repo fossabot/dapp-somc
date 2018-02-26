@@ -1,3 +1,4 @@
+global.config = require('../config/'+(process.env.NODE_ENV || "dev")+'.js')
 var assert = require('assert');
 var offerings = require('../models/offerings');
 
