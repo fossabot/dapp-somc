@@ -6,6 +6,7 @@ Service Offering Messaging Channel
 
 * nodejs v9.3+
 * npm v5.6+
+* [mongodb](https://docs.mongodb.com/manual/installation/)
 
 ## Installation
 
