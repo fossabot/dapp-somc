@@ -13,6 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "^3.0.2"
+    "ethereumjs-abi": "^0.6.5",
+    "mongodb": "^3.0.2",
+    "rpc-websockets": "^4.0.0"
   }
 }

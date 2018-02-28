@@ -84,10 +84,19 @@ class offerings {
         return Promise.all(promises);
     }
 
-    async getOfferingChannel(hash){
+    async getOfferingChannel(hash,state_channel){
         await this._initialize();
+        let where = null;
+        if (hash){
+            where = {'hash': hash};
+        }else if (state_channel){
+            where = {'state_channel': state_channel};
+        }else{
+            return false;
+        }
+
         return new Promise((resolve, reject) => {
-            me.db.offering_channels.findOne({'hash': hash}, (err,rows) => {
+            me.db.offering_channels.find(where).toArray((err,rows) => {
                 if (err) reject(err);
                 else resolve(rows);
             });
@@ -103,7 +112,7 @@ class offerings {
                 message_type: message_type,
                 data: data
             }
-            me.db.offering_channels.update({'hash':hash},dataObj,{upsert:true},(err,res) => {
+            me.db.offering_channels.update({'hash': hash,'state_channel':state_channel, 'message_type':message_type},dataObj,{upsert:true},(err,res) => {
                 if (err) reject(err);
                 else resolve();
             })
