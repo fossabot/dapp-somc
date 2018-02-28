@@ -9,7 +9,7 @@ class offerings {
             me = this;
             const MongoClient = require('mongodb').MongoClient;
             return new Promise(function (callback) {
-                MongoClient.connect(config.mongo.url, function (err, db) {
+                MongoClient.connect(config.mongo.url || process.env.MONGO_URL, function (err, db) {
                     if (err) throw err;
                     me.db = {
                         connector: db,

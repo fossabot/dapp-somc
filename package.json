@@ -5,10 +5,12 @@
   "main": "index.js",
   "devDependencies": {
     "chai": "^4.1.2",
-    "mocha": "^5.0.1"
+    "json-stringify-safe": "^5.0.1",
+    "mocha": "^5.0.1",
+    "mocha-json-streamier-reporter": "^1.4.2"
   },
   "scripts": {
-    "test": "mkdir -p ./data && mkdir -p ./data/db && mongod --dbpath ./data/db/ > ./mongodb.log 2>&1 & mocha --timeout 10000 && kill -9 $(lsof -ti :27017)"
+    "test": "mkdir -p ./data && mkdir -p ./data/db && mongod --dbpath ./data/db/ > ./mongodb.log 2>&1 & mocha --timeout 10000  && kill -9 $(lsof -ti :27017)"
   },
   "author": "",
   "license": "ISC",
