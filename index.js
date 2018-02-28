@@ -16,4 +16,9 @@ server.register('subscribe', offerings.subscribe)
 //server.register('auth_info', offerings.auth_info)
 server.register('connection_info', offerings.connection_info)
 
-process.on('unhandledRejection', up => { throw up })
+module.exports = {
+    server: server,
+    offerings: offerings
+};
+
+//process.on('unhandledRejection', up => { throw up })

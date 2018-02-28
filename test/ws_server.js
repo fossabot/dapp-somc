@@ -1,6 +1,6 @@
 global.config = require('../config/'+(process.env.NODE_ENV || "dev")+'.js')
 var assert = require('assert');
-require('../index.js')
+const index = require('../index.js')
 
 
 const WebSocketClient = require('rpc-websockets').Client;
@@ -28,7 +28,8 @@ const offering_data = '{ \
 describe("Test functions SOMC wesocket server", function(){
 
     after(async () => {
-        process.exit(0);
+       index.server.close();
+       index.offerings.o.db.connector.close();
     })
 
     it("Save new offering", async () => {
