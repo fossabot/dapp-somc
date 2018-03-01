@@ -8,7 +8,7 @@ module.exports = {
         }
     },
     ws:{
-        host: 'localhost',
-        port: 8080
+        host: '',
+        port: 0
     }
 }
