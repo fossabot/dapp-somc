@@ -6,24 +6,8 @@ const index = require('../index.js')
 const WebSocketClient = require('rpc-websockets').Client;
 const abi = require('ethereumjs-abi');
 
-const offering_data = '{ \
-            "template_version" : 2, \
-            "agent_public_key" : "MDRhMzRiOTlmMjJjNzkwYzRlMzZiMmIzYzJjMzVhMzZkYjA2MjI2ZTQxYzY5MmZjODJiOGI1NmFjMWM1NDBjNWJkNWI4ZGVjNTIzNWEwZmE4NzIyNDc2Yzc3MDljMDI1NTllM2FhNzNhYTAzOTE4YmEyZDQ5MmVlYTc1YWJlYTIzNQ==", \
-            "service_name" : "VPN", \
-            "country" : "US", \
-            "service_supply" : 5, \
-            "service_unit" : "MB", \
-            "unit_price" : 0.0000002, \
-            "min_units" : 100, \
-            "max_units" : 10000, \
-            "billing_interval" : 50, \
-            "billing_interval_time_deviation" : 10, \
-            "free_intervals" : 2, \
-            "min_download_mbps" : 0.2, \
-            "min_upload_mbps" : 0.5, \
-            "uuid" : "ea864be6-db42-43e2-bffa-aa44ace573f0", \
-            "signature" : "MUhad2tqa2Vhb1pmVFNhSnhEdzZhS2t4cDQ1YWdEaUV6Tkd5amZ2ZENuWVlOVkNFMHBscUtLcm5OWGthUXJiYlBuRGUycjU5alpKU1dsaWNMNllNaS96YUg2Vmh5a3FCcFFXQWtwSEErNGZ4eXVpQWNTelpBVUs5QT0=" \
-        }';
+const offering_data = 'ew0KICAidGVtcGxhdGVWZXJzaW9uIiA6IDIsDQogICJhZ2VudFB1YmxpY0tleSIgOiAiTURSaE16UmlPVGxtTWpKak56a3dZelJsTXpaaU1tSXpZekpqTXpWaE16WmtZakEyTWpJMlpUUXhZelk1TW1aak9ESmlPR0kxTm1Gak1XTTFOREJqTldKa05XSTRaR1ZqTlRJek5XRXdabUU0TnpJeU5EYzJZemMzTURsak1ESTFOVGxsTTJGaE56TmhZVEF6T1RFNFltRXlaRFE1TW1WbFlUYzFZV0psWVRJek5RPT0iLA0KICAic2VydmljZU5hbWUiIDogIlZQTiIsDQogICJjb3VudHJ5IiA6ICJVUyIsDQogICJzZXJ2aWNlU3VwcGx5IiA6IDUsDQogICJzZXJ2aWNlVW5pdCIgOiAiTUIiLA0KICAic2VydmljZVVuaXQiIDogMC4wMDAwMDAyLA0KICAibWluVW5pdHMiIDogMTAwLA0KICAibWF4VW5pdHMiIDogMTAwMDAsDQogICJiaWxsaW5nSW50ZXJ2YWwiIDogNTAsDQogICJtYXhCaWxsaW5nVW5pdExhZyIgOiAxMCwNCiAgIm1heEluYWN0aXZlVGltZSIgOiAyLA0KICAiZnJlZUludGVydmFscyIgOiAwLjIsDQogICJtaW5Eb3dubG9hZE1icHMiIDogMC41LA0KICAibWluVXBsb2FkTWJwcyI6IDAuNSwNCiAgInByb3RvY29sIjogInRjcCIsDQogICJ1dWlkIiA6ICJlYTg2NGJlNi1kYjQyLTQzZTItYmZmYS1hYTQ0YWNlNTczZjAiLA0KICAic2lnbmF0dXJlIiA6ICJNVWhhZDJ0cWEyVmhiMXBtVkZOaFNuaEVkelpoUzJ0NGNEUTFZV2RFYVVWNlRrZDVhbVoyWkVOdVdWbE9Wa05GTUhCc2NVdExjbTVPV0d0aFVYSmlZbEJ1UkdVeWNqVTVhbHBLVTFkc2FXTk1ObGxOYVM5NllVZzJWbWg1YTNGQ2NGRlhRV3R3U0VFck5HWjRlWFZwUVdOVGVscEJWVXM1UVQwPSINCn0';
+const offering_hash = abi.soliditySHA3(['string'],[new Buffer(offering_data, 'base64').toString()]).toString('hex');
 
 describe("Test functions SOMC wesocket server", function(){
 
@@ -39,8 +23,9 @@ describe("Test functions SOMC wesocket server", function(){
                 resolve();
             })
         })
-        await ws.call('new_offering',{
-            "hash" : abi.soliditySHA3(['string'],[offering_data]).toString('hex'),
+
+        await ws.call('newOffering',{
+            "hash" : offering_hash,
             "data" : offering_data
         }).then(function(result){
             assert.equal(result, true);
@@ -55,10 +40,11 @@ describe("Test functions SOMC wesocket server", function(){
                 resolve();
             })
         })
-        await ws.call('get_offerings',{
-            "hashes":[abi.soliditySHA3(['string'],[offering_data]).toString('hex')]
+
+        await ws.call('getOfferings',{
+            "hashes":[offering_hash]
         }).then(function(result){
-            assert.equal(Array.isArray(result) && result[0].hash==abi.soliditySHA3(['string'],[offering_data]).toString('hex'), true);
+            assert.equal(Array.isArray(result) && result[0].hash==offering_hash, true);
         })
         ws.close();
     })
@@ -70,13 +56,14 @@ describe("Test functions SOMC wesocket server", function(){
                 resolve();
             })
         })
-        await ws.call('get_offerings',{
-            "hashes":[abi.soliditySHA3(['string'],[offering_data]).toString('hex')+'1']
+        await ws.call('getOfferings',{
+            "hashes":[offering_hash+'1']
         }).then(function(result){
             assert.equal(Array.isArray(result) && result.length==0, true);
         })
         ws.close();
     })
+
 
     /*it("Subscribe to channel and receive notification by agent", async () => {
         const ws = new WebSocketClient('ws://'+config.ws.host+':'+config.ws.port);
@@ -140,7 +127,7 @@ describe("Test functions SOMC wesocket server", function(){
                 resolve();
             })
         })
-        const offering_hash = abi.soliditySHA3(['string'],[offering_data]).toString('hex');
+
         const state_channel = '4598dec954ca4356b95d927a8404aea69b881169b7fc3a69c506471f625254ds';
         //Subcribe by client
         await ws.call('subscribe',{
@@ -153,13 +140,13 @@ describe("Test functions SOMC wesocket server", function(){
 
         //Listen RPC call connection_info by client
         const p = new Promise((resolver)=> {
-            ws.on('connection_info',function(params){
+            ws.on('connectionInfo',function(params){
                 resolver(params);
             })
         })
 
         //Sent state_channel by agent
-        await ws1.call('connection_info',{
+        await ws1.call('connectionInfo',{
             "template_version" : 2,
             "offering_hash" : offering_hash,
             "state_channel" : state_channel,
@@ -220,10 +207,10 @@ describe("Test functions SOMC wesocket server", function(){
                 resolve();
             })
         })
-        const offering_hash = abi.soliditySHA3(['string'],[offering_data]).toString('hex');
+
         const state_channel = '4598dec954ca4356b95d927a8404aea69b881169b7fc3a69c506471f625254ds';
         //Sent state_channel by agent
-        await ws1.call('connection_info',{
+        await ws1.call('connectionInfo',{
             "template_version" : 2,
             "offering_hash" : offering_hash,
             "state_channel" : state_channel,
@@ -238,7 +225,7 @@ describe("Test functions SOMC wesocket server", function(){
 
         //Listen RPC call auth_info by agent
         const p = new Promise((resolver)=> {
-            ws.on('connection_info',function(params){
+            ws.on('connectionInfo',function(params){
                 resolver(params);
             })
         })

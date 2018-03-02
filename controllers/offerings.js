@@ -17,11 +17,12 @@ class offerings {
         this.o = new OfferingModel();
     }
 
-    async new_offering (params){
+    async newOffering (params){
         if (!params || !params.hash || !params.data){
             return me.server.createError(400, "Hash and data field is required");
         }
-        const data_hash = abi.soliditySHA3(['string'],[params.data]).toString('hex');
+        const data_json = new Buffer(params.data, 'base64').toString();
+        const data_hash = abi.soliditySHA3(['string'],[data_json]).toString('hex');
         if (data_hash==params.hash){
             await me.o.saveOffering(data_hash,'0xe87d50b24f73ef30a28af9a6d6c293bfe24a4e7b',params.data)
             return true;
@@ -31,7 +32,7 @@ class offerings {
         return me.server.createError(500, "Unknown error")
     }
 
-    async get_offerings (params){
+    async getOfferings (params){
         if (!params || !params.hashes){
             return me.server.createError(400, "Hashes field is required");
         }
@@ -104,7 +105,7 @@ class offerings {
         return true;
     }
 
-    async connection_info (params) {
+    async connectionInfo (params) {
         if (!params || !params.offering_hash || !params.state_channel || !params.dns || !params.ipv4 || !params.signature){
             return me.server.createError(400, "Need all required fields");
         }
@@ -131,7 +132,7 @@ class offerings {
         client.send(JSON.stringify({
             "jsonrpc" : "2.0",
             "id" : client.message_id,
-            "method" : "connection_info",
+            "method" : "connectionInfo",
             "params" : params
         }));
     }

@@ -10,11 +10,11 @@ const server = new ws_server({
     });
 
 const offerings = new Offerings(server);
-server.register('new_offering', offerings.new_offering)
-server.register('get_offerings', offerings.get_offerings)
+server.register('newOffering', offerings.newOffering)
+server.register('getOfferings', offerings.getOfferings)
 server.register('subscribe', offerings.subscribe)
 //server.register('auth_info', offerings.auth_info)
-server.register('connection_info', offerings.connection_info)
+server.register('connectionInfo', offerings.connectionInfo)
 
 module.exports = {
     server: server,
