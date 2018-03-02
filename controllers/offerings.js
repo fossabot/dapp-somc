@@ -51,12 +51,12 @@ class offerings {
     async subscribe (params,socket_id) {
 
         if (params.type=='agent') {
-            if (!params.offering_hash){
-                return me.server.createError(400, "Offering_hash field is required");
+            if (!params.offeringHash){
+                return me.server.createError(400, "OfferingHash field is required");
             }
-            me.subscribed_agents[params.offering_hash] = socket_id;
-            me.subscribed_agents_sockets[socket_id] = params.offering_hash;
-            me.o.getOfferingChannel(params.offering_hash, null).then((old_messages) => {
+            me.subscribed_agents[params.offeringHash] = socket_id;
+            me.subscribed_agents_sockets[socket_id] = params.offeringHash;
+            me.o.getOfferingChannel(params.offeringHash, null).then((old_messages) => {
                 if (old_messages.length > 0) {
                     let client = me.server.namespaces['/'].clients.get(socket_id);
                     for (var i in old_messages) {
@@ -68,12 +68,12 @@ class offerings {
             });
             return true;
         }else if (params.type=='client'){
-            if (!params.state_channel){
-                return me.server.createError(400, "State_channel field is required");
+            if (!params.stateChannel){
+                return me.server.createError(400, "StateChannel field is required");
             }
-            me.subscribed_clients[params.state_channel] = socket_id;
-            me.subscribed_clients_sockets[socket_id] = params.state_channel;
-            me.o.getOfferingChannel(null, params.state_channel).then((old_messages) => {
+            me.subscribed_clients[params.stateChannel] = socket_id;
+            me.subscribed_clients_sockets[socket_id] = params.stateChannel;
+            me.o.getOfferingChannel(null, params.stateChannel).then((old_messages) => {
                 if (old_messages.length>0) {
                     let client = me.server.namespaces['/'].clients.get(socket_id);
                     for (var i in old_messages) {
@@ -93,25 +93,25 @@ class offerings {
     }
 
     async auth_info (params) {
-        if (!params || !params.offering_hash || !params.state_channel || !params.client_public_key || !params.password || !params.signature){
+        if (!params || !params.offeringHash || !params.stateChannel || !params.client_public_key || !params.password || !params.signature){
             return me.server.createError(400, "Need all required fields");
         }
-        me.o.saveOfferingChannel(params.offering_hash,params.state_channel,'agent', params);
+        me.o.saveOfferingChannel(params.offeringHash,params.stateChannel,'agent', params);
 
-        if (me.subscribed_agents[params.offering_hash]){
-            let client = me.server.namespaces['/'].clients.get(me.subscribed_agents[params.offering_hash]);
+        if (me.subscribed_agents[params.offeringHash]){
+            let client = me.server.namespaces['/'].clients.get(me.subscribed_agents[params.offeringHash]);
             if (client) me.sendAuthInfo(client,params)
         }
         return true;
     }
 
     async connectionInfo (params) {
-        if (!params || !params.offering_hash || !params.state_channel || !params.dns || !params.ipv4 || !params.signature){
+        if (!params || !params.offeringHash || !params.stateChannel || !params.dns || !params.ipv4 || !params.signature){
             return me.server.createError(400, "Need all required fields");
         }
-        me.o.saveOfferingChannel(params.offering_hash,params.state_channel,'client', params);
-        if (me.subscribed_clients[params.state_channel]){
-            let client = me.server.namespaces['/'].clients.get(me.subscribed_clients[params.state_channel]);
+        me.o.saveOfferingChannel(params.offeringHash,params.stateChannel,'client', params);
+        if (me.subscribed_clients[params.stateChannel]){
+            let client = me.server.namespaces['/'].clients.get(me.subscribed_clients[params.stateChannel]);
             if (client) me.sendConnectionInfo(client,params)
         }
         return true;

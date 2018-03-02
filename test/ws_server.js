@@ -132,7 +132,7 @@ describe("Test functions SOMC wesocket server", function(){
         //Subcribe by client
         await ws.call('subscribe',{
             "type": "client",
-            "state_channel" : state_channel
+            "stateChannel" : state_channel
         }).then(function(result){
             assert.equal(result, true);
         });
@@ -148,8 +148,8 @@ describe("Test functions SOMC wesocket server", function(){
         //Sent state_channel by agent
         await ws1.call('connectionInfo',{
             "template_version" : 2,
-            "offering_hash" : offering_hash,
-            "state_channel" : state_channel,
+            "offeringHash" : offering_hash,
+            "stateChannel" : state_channel,
             "dns" : "MDRhMzRiOTlmMjJjNzkwYzRlMzZiMmIzYzJjMzVhMzZkYjA2MjI2ZTQxYzY5MmZjODJiOGI1NmFjMWM1NDBjNWJkNWI4ZGVjNTIzNWEwZmE4NzIyNDc2Yzc3MDljMDI1NTllM2FhNzNhYTAzOTE4YmEyZDQ5MmVlYTc1YWJlYTIzNQ==",
             "ipv4": "NjJkMmY4NjBkZDRhNjIwMzhlYzE5YWEyNGM4YWFjMDdhYmZjNDUyOGMwYzBkMjk1MDJmYWU5YjExMjhjZjFhMTYyZDJmODYwZGQ0YTYyMDM4ZWMxOWFhMjRjOGFhYzA3YWJmYzQ1MjhjMGMwZDI5NTAyZmFlOWIxMTI4Y2YxYTE=",
             "ipv6": "MDhjNTZiOTlmMjJjNzkwYzRlMzZiMmIzYzJjMzVhMzZkYjA2MjI2ZTQxYzY5MmZjODJiOGI1NmFjMWM1NDBjNWJkNWI4ZGVjNTIzNWEwZmE4NzIyNDc2Yzc3MDljMDI1NTllM2FhNzNhYTAzOTE4YmEyZDQ5MmVlYTc1YTU2NTQ=",
@@ -159,7 +159,7 @@ describe("Test functions SOMC wesocket server", function(){
         });
 
         await p.then((params) => {
-            assert.equal(params && params.state_channel==state_channel, true)
+            assert.equal(params && params.stateChannel==state_channel, true)
         });
         ws.close();
         ws1.close();
@@ -212,8 +212,8 @@ describe("Test functions SOMC wesocket server", function(){
         //Sent state_channel by agent
         await ws1.call('connectionInfo',{
             "template_version" : 2,
-            "offering_hash" : offering_hash,
-            "state_channel" : state_channel,
+            "offeringHash" : offering_hash,
+            "stateChannel" : state_channel,
             "dns" : "MDRhMzRiOTlmMjJjNzkwYzRlMzZiMmIzYzJjMzVhMzZkYjA2MjI2ZTQxYzY5MmZjODJiOGI1NmFjMWM1NDBjNWJkNWI4ZGVjNTIzNWEwZmE4NzIyNDc2Yzc3MDljMDI1NTllM2FhNzNhYTAzOTE4YmEyZDQ5MmVlYTc1YWJlYTIzNQ==",
             "ipv4": "NjJkMmY4NjBkZDRhNjIwMzhlYzE5YWEyNGM4YWFjMDdhYmZjNDUyOGMwYzBkMjk1MDJmYWU5YjExMjhjZjFhMTYyZDJmODYwZGQ0YTYyMDM4ZWMxOWFhMjRjOGFhYzA3YWJmYzQ1MjhjMGMwZDI5NTAyZmFlOWIxMTI4Y2YxYTE=",
             "ipv6": "MDhjNTZiOTlmMjJjNzkwYzRlMzZiMmIzYzJjMzVhMzZkYjA2MjI2ZTQxYzY5MmZjODJiOGI1NmFjMWM1NDBjNWJkNWI4ZGVjNTIzNWEwZmE4NzIyNDc2Yzc3MDljMDI1NTllM2FhNzNhYTAzOTE4YmEyZDQ5MmVlYTc1YTU2NTQ=",
@@ -232,13 +232,13 @@ describe("Test functions SOMC wesocket server", function(){
 
         ws.call('subscribe',{
             "type": "client",
-            "state_channel" : state_channel
+            "stateChannel" : state_channel
         }).then(function(result){
             assert.equal(result, true);
         });
 
         await p.then((params) => {
-            assert.equal(params && params.state_channel==state_channel, true)
+            assert.equal(params && params.stateChannel==state_channel, true)
         });
         ws.close();
 
