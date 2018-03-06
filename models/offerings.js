@@ -1,22 +1,21 @@
 "use strict";
 const mongo = require('mongodb');
 var me = null;
-const url = "mongodb://localhost:27017/somc";
 
 class offerings {
 
-    async _initialize (url) {
+    async _initialize () {
         if (!me || !me.db || !me.db.connector || !me.db.connector.isConnected()) {
             me = this;
             const MongoClient = require('mongodb').MongoClient;
             return new Promise(function (callback) {
-                MongoClient.connect(url, function (err, db) {
+                MongoClient.connect(config.mongo.url || process.env.MONGO_URL, function (err, db) {
                     if (err) throw err;
                     me.db = {
                         connector: db,
-                        database: db.db("somc"),
-                        offerings: db.db("somc").collection('offerings'),
-                        offering_channels: db.db("somc").collection('offering_channel')
+                        database: db.db(config.mongo.db),
+                        offerings: db.db(config.mongo.db).collection(config.mongo.collections.offerings),
+                        offering_channels: db.db(config.mongo.db).collection(config.mongo.collections.offering_channels)
                     };
                     callback();
                 })
@@ -30,7 +29,7 @@ class offerings {
      * @returns {Promise.<Array>}
      */
     async getOfferings (hash_list) {
-        await this._initialize(url);
+        await this._initialize();
         const ret = [];
         for(var i in hash_list) {
             ret.push(new Promise((resolve, reject) => {
@@ -52,7 +51,7 @@ class offerings {
      */
 
     async saveOffering(hash, agent_address, data) {
-        await this._initialize(url);
+        await this._initialize();
         return new Promise((resolve, reject) => {
             const dataObj = {
                 hash: hash,
@@ -72,7 +71,7 @@ class offerings {
      * @returns {Promise.<Array>}
      */
     async deleteOfferings (hash_list) {
-        await this._initialize(url);
+        await this._initialize();
         const promises = [];
         for(var i in hash_list) {
             promises.push(new Promise((resolve, reject) => {
@@ -85,10 +84,19 @@ class offerings {
         return Promise.all(promises);
     }
 
-    async getOfferingChannel(hash){
-        await this._initialize(url);
+    async getOfferingChannel(hash,state_channel){
+        await this._initialize();
+        let where = null;
+        if (hash){
+            where = {'hash': hash};
+        }else if (state_channel){
+            where = {'state_channel': state_channel};
+        }else{
+            return false;
+        }
+
         return new Promise((resolve, reject) => {
-            me.db.offering_channels.findOne({'hash': hash}, (err,rows) => {
+            me.db.offering_channels.find(where).toArray((err,rows) => {
                 if (err) reject(err);
                 else resolve(rows);
             });
@@ -96,7 +104,7 @@ class offerings {
     }
 
     async saveOfferingChannel(hash, state_channel, message_type, data) {
-        await this._initialize(url);
+        await this._initialize();
         return new Promise((resolve, reject) => {
             const dataObj = {
                 hash: hash,
@@ -104,7 +112,7 @@ class offerings {
                 message_type: message_type,
                 data: data
             }
-            me.db.offering_channels.update({'hash':hash},dataObj,{upsert:true},(err,res) => {
+            me.db.offering_channels.update({'hash': hash,'state_channel':state_channel, 'message_type':message_type},dataObj,{upsert:true},(err,res) => {
                 if (err) reject(err);
                 else resolve();
             })
@@ -112,7 +120,7 @@ class offerings {
     }
 
     async deleteOfferingChannel (hash) {
-        await this._initialize(url);
+        await this._initialize();
         return new Promise((resolve, reject) => {
             me.db.offering_channels.deleteOne({'hash': hash}, (err,rows) => {
                 if (err) reject(err);
