@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/70f41c722e08e51b2ea6/maintainability)](https://codeclimate.com/github/Privatix/dapp-somc/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/70f41c722e08e51b2ea6/test_coverage)](https://codeclimate.com/github/Privatix/dapp-somc/test_coverage)
 [![Dependency Status](https://david-dm.org/Privatix/dapp-somc.svg)](https://david-dm.org/Privatix/dapp-somc)
 
 # Service Offering Messaging Channel
