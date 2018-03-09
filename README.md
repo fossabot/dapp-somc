@@ -1,3 +1,5 @@
+[![Dependency Status](https://david-dm.org/Privatix/dapp-somc.svg)](https://david-dm.org/Privatix/dapp-somc)
+
 # Service Offering Messaging Channel
 
 Service Offering Messaging Channel (SOMC) is channel that used to publish full Service Offering message, Authentication message and Service Endpoint message. Used by Agent and Client to exchange necessary information that allow Client to start using Privatix Service proposed by Agent.
