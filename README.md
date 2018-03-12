@@ -34,20 +34,20 @@ npm install
 
 Checking installation succeed:
 
-* Check versions of nodejs and npm
-* Check work of mongodb 
-* Check log of modules install 
+* Check versions of `nodejs` and `npm`
+* Check work of `mongodb`
+* Check log of installed modules
 
 # Tests
 
 ## Preparing environment
 
-* Default environment is "dev". For change it set environment variable NODE_ENV
-* Change config file in config/dev.js or other name of file from environment variable NODE_ENV
-* In config file set:
-  * mongo.url - url for connection to mongodb
-  * ws.host - host of listenning SOMC 
-  * ws.port - port of listenning SOMC  
+* Default environment is `dev`. For change it set environment variable `NODE_ENV`
+* Change config file in `config/dev.js` or other name of file from environment variable `NODE_ENV`
+* In `config` file set:
+  * `mongo.url` — url for connection to mongodb
+  * `ws.host` — host of listenning SOMC
+  * `ws.port` — port of listenning SOMC  
 
 ## Running the tests
 
