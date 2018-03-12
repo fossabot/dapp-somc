@@ -25,15 +25,15 @@ class offerings {
 
     /**
      * Get offerings by list of hashes
-     * @param hash_list array
+     * @param hashList array
      * @returns {Promise.<Array>}
      */
-    async getOfferings (hash_list) {
+    async getOfferings (hashList) {
         await this._initialize();
         const ret = [];
-        for(var i in hash_list) {
+        for(var i in hashList) {
             ret.push(new Promise((resolve, reject) => {
-                me.db.offerings.findOne({'hash': hash_list[i]}, (err,rows) => {
+                me.db.offerings.findOne({'hash': hashList[i]}, (err,rows) => {
                     if (err) reject(err);
                     else resolve(rows);
                 });
@@ -45,17 +45,17 @@ class offerings {
     /**
      * Insert new offering or update if offering with this hash already exists
      * @param hash string
-     * @param agent_address string
+     * @param agentAddress string
      * @param data string
      * @returns {Promise<void>}
      */
 
-    async saveOffering(hash, agent_address, data) {
+    async saveOffering(hash, agentAddress, data) {
         await this._initialize();
         return new Promise((resolve, reject) => {
             const dataObj = {
                 hash: hash,
-                agent_address: agent_address,
+                agentAddress: agentAddress,
                 data: data
             }
             me.db.offerings.update({'hash':hash},dataObj,{upsert:true},(err,res) => {
@@ -67,15 +67,15 @@ class offerings {
 
     /**
      * Delete offerings
-     * @param hash_list
+     * @param hashList
      * @returns {Promise.<Array>}
      */
-    async deleteOfferings (hash_list) {
+    async deleteOfferings (hashList) {
         await this._initialize();
         const promises = [];
-        for(var i in hash_list) {
+        for(var i in hashList) {
             promises.push(new Promise((resolve, reject) => {
-                me.db.offerings.deleteOne({'hash': hash_list[i]}, (err,rows) => {
+                me.db.offerings.deleteOne({'hash': hashList[i]}, (err,rows) => {
                     if (err) reject(err);
                     else resolve();
                 });
@@ -84,13 +84,13 @@ class offerings {
         return Promise.all(promises);
     }
 
-    async getOfferingChannel(hash,state_channel){
+    async getOfferingChannel(hash,stateChannel){
         await this._initialize();
         let where = null;
         if (hash){
             where = {'hash': hash};
-        }else if (state_channel){
-            where = {'state_channel': state_channel};
+        }else if (stateChannel){
+            where = {'stateChannel': stateChannel};
         }else{
             return false;
         }
@@ -103,16 +103,16 @@ class offerings {
         })
     }
 
-    async saveOfferingChannel(hash, state_channel, message_type, data) {
+    async saveOfferingChannel(hash, stateChannel, messageType, data) {
         await this._initialize();
         return new Promise((resolve, reject) => {
             const dataObj = {
                 hash: hash,
-                state_channel: state_channel,
-                message_type: message_type,
+                stateChannel: stateChannel,
+                messageType: messageType,
                 data: data
             }
-            me.db.offering_channels.update({'hash': hash,'state_channel':state_channel, 'message_type':message_type},dataObj,{upsert:true},(err,res) => {
+            me.db.offering_channels.update({'hash': hash,'stateChannel':stateChannel, 'messageType':messageType},dataObj,{upsert:true},(err,res) => {
                 if (err) reject(err);
                 else resolve();
             })
