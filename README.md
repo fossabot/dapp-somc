@@ -30,21 +30,24 @@ Install dependencies:
 
 ```
 npm install
-@lart5 please add installation steps (if it possible)
 ```
 
 Checking installation succeed:
 
-```
-@lart5 please add how to make sure that
-installation was succeeded (if it possible)
-```
+* Check versions of nodejs and npm
+* Check work of mongodb 
+* Check log of modules install 
 
 # Tests
 
 ## Preparing environment
-@lart5 please a step by step
-instruction for preparing environment (if it possible)
+
+* Default environment is "dev". For change it set environment variable NODE_ENV
+* Change config file in config/dev.js or other name of file from environment variable NODE_ENV
+* In config file set:
+  * mongo.url - url for connection to mongodb
+  * ws.host - host of listenning SOMC 
+  * ws.port - port of listenning SOMC  
 
 ## Running the tests
 
