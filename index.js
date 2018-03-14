@@ -1,3 +1,4 @@
+
 global.config = require('./config/'+(process.env.NODE_ENV || "dev")+'.js')
 
 const ws_server = require('./controllers/ws_server');
