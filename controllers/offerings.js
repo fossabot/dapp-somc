@@ -20,7 +20,7 @@ class offerings {
             return me.server.createError(400, "Hash and data field is required");
         }
         const data_json = new Buffer(params.data, 'base64').toString();
-        const data_hash = abi.soliditySHA3(['string'],[data_json]).toString('hex');
+        const data_hash = abi.soliditySHA3(['string'],[data_json]).toString('base64');
         if (data_hash==params.hash){
             await me.o.saveOffering(data_hash,'0xe87d50b24f73ef30a28af9a6d6c293bfe24a4e7b',params.data)
             return true;
