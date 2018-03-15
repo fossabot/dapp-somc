@@ -59,22 +59,22 @@ describe("Test functions of model offerings", function(){
     it("Save new offering channel", async () => {
         //this offering channel should not exist in db
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash)).length,0);
-        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.messageType,offeringChannelDate.data);
+        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.data);
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash))[0].hash,offeringChannelDate.hash);
     });
 
     it("Update existing offering channel", async () => {
         //Add offering channel first time
-        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.messageType,offeringChannelDate.data);
+        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.data);
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash))[0].hash,offeringChannelDate.hash);
         //Update old offering
-        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.messageType,offeringChannelDate.data+'1');
+        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.data+'1');
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash))[0].data,offeringChannelDate.data+'1');
     });
 
     it("Delete offering channel", async () => {
         //Add offering channel first time
-        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.messageType,offeringChannelDate.data);
+        await o.saveOfferingChannel(offeringChannelDate.hash,offeringChannelDate.stateChannel,offeringChannelDate.data);
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash))[0].hash,offeringChannelDate.hash);
         await o.deleteOfferingChannel(offeringChannelDate.hash);
         assert.equal((await o.getOfferingChannel(offeringChannelDate.hash)).length,0);

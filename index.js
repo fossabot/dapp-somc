@@ -14,12 +14,9 @@ const offerings = new Offerings(server);
 server.register('newOffering', offerings.newOffering)
 server.register('getOfferings', offerings.getOfferings)
 server.register('subscribe', offerings.subscribe)
-//server.register('auth_info', offerings.auth_info)
 server.register('connectionInfo', offerings.connectionInfo)
 
 module.exports = {
     server: server,
     offerings: offerings
 };
-
-//process.on('unhandledRejection', up => { throw up })
