@@ -103,16 +103,15 @@ class offerings {
         })
     }
 
-    async saveOfferingChannel(hash, stateChannel, messageType, data) {
+    async saveOfferingChannel(hash, stateChannel, data) {
         await this._initialize();
         return new Promise((resolve, reject) => {
             const dataObj = {
                 hash: hash,
                 stateChannel: stateChannel,
-                messageType: messageType,
                 data: data
             }
-            me.db.offering_channels.update({'hash': hash,'stateChannel':stateChannel, 'messageType':messageType},dataObj,{upsert:true},(err,res) => {
+            me.db.offering_channels.update({'hash': hash,'stateChannel':stateChannel},dataObj,{upsert:true},(err,res) => {
                 if (err) reject(err);
                 else resolve();
             })
