@@ -17,7 +17,7 @@ class offerings {
 
     async newOffering (params){
         if (!params || !params.hash || !params.data){
-            return me.server.createError(400, "Hash and data field is required");
+            throw me.server.createError(400, "Hash and data field is required");
         }
         const data_json = new Buffer(params.data, 'base64').toString();
         const data_hash = abi.soliditySHA3(['string'],[data_json]).toString('base64');
@@ -25,17 +25,17 @@ class offerings {
             await me.o.saveOffering(data_hash,'0xe87d50b24f73ef30a28af9a6d6c293bfe24a4e7b',params.data)
             return true;
         }else{
-            return me.server.createError(4001, "Hash does not match", params.hash+'!='+data_hash)
+            throw me.server.createError(4001, "Hash does not match", params.hash+'!='+data_hash);
         }
-        return me.server.createError(500, "Unknown error")
+        throw me.server.createError(500, "Unknown error")
     }
 
     async getOfferings (params){
         if (!params || !params.hashes){
-            return me.server.createError(400, "Hashes field is required");
+            throw me.server.createError(400, "Hashes field is required");
         }
         if (!Array.isArray(params.hashes)){
-            return me.server.createError(400, "Hashes field must be array");
+            throw me.server.createError(400, "Hashes field must be array");
         }
         let offerings = await me.o.getOfferings(params.hashes);
         let ret = [];
@@ -49,7 +49,7 @@ class offerings {
     async subscribe (params,socket_id) {
 
         if (!params.stateChannel){
-            return me.server.createError(400, "StateChannel field is required");
+            throw me.server.createError(400, "StateChannel field is required");
         }
         me.subscribed_clients[params.stateChannel] = socket_id;
         me.subscribed_clients_sockets[socket_id] = params.stateChannel;
@@ -63,12 +63,12 @@ class offerings {
         });
         return true;
 
-        return me.server.createError(500, "Unknown error")
+        throw me.server.createError(500, "Unknown error")
     }
 
     async connectionInfo (params) {
         if (!params || !params.stateChannel){
-            return me.server.createError(400, "Need all required fields");
+            throw me.server.createError(400, "Need all required fields");
         }
         me.o.saveOfferingChannel(params.offeringHash,params.stateChannel, params);
         if (me.subscribed_clients[params.stateChannel]){
