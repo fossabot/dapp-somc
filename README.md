@@ -1,6 +1,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/70f41c722e08e51b2ea6/maintainability)](https://codeclimate.com/github/Privatix/dapp-somc/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/70f41c722e08e51b2ea6/test_coverage)](https://codeclimate.com/github/Privatix/dapp-somc/test_coverage)
 [![Dependency Status](https://david-dm.org/Privatix/dapp-somc.svg)](https://david-dm.org/Privatix/dapp-somc)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPrivatix%2Fdapp-somc.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FPrivatix%2Fdapp-somc?ref=badge_shield)
 
 # Service Offering Messaging Channel
 
@@ -75,3 +76,6 @@ See also the list of [contributors](https://github.com/Privatix/dapp-somc/contri
 # License
 
 This project is licensed under the **GPL-3.0 License** - see the [COPYING](COPYING) file for details.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPrivatix%2Fdapp-somc.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FPrivatix%2Fdapp-somc?ref=badge_large)
